@@ -89,6 +89,17 @@ module NavigationHelper
               :action     => "edit_main_company"
             } 
           ]
+        },
+        {
+          :name => "Karyawan",
+          :url  => 'new_employee_url',
+          :icon => "icon-home",
+          :activities => [
+            {
+              :controller => "employees",
+              :action     => "new"
+            } 
+          ]
         }
       ]
       

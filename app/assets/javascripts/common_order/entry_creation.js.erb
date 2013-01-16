@@ -5,6 +5,7 @@ $(document).ready(function(){
 		var yes_value = "Yes"; 
 		var cancel_value = 'false';
 		var $this = $(this); 
+		var action = $this.attr("href");
 		var $row = $this.parents("tr")
 		var entry_id = $row.attr("id").split('-')[1];  
 		var $form = $("#delete_entry_form_wrapper form"); 
@@ -23,8 +24,8 @@ $(document).ready(function(){
 				$row.spin("large", "black"); 
 
 		    $.ajax({
-		      url: $form.attr("action"),
-		      type: "POST",
+		      url: action,
+		      type: "DELETE",
 		      data: $form.serialize(),
 		      dataType: 'script',
 		      success: function(response){

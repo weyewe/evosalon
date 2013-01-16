@@ -7,6 +7,10 @@ Evosalon::Application.routes.draw do
   
   resources :users
   resources :app_users
+  
+  resources :customers 
+  resources :services
+  resources :employees
  
 =begin
   USER SETTING
