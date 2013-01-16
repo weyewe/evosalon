@@ -1,6 +1,6 @@
 <%= render :partial => "layouts/masthead" ,:locals => {
-	:title => "Karyawan",
-	:description => "Tambah informasi karyawan ke database"
+	:title => "Service",
+	:description => "Tambah service ke database"
 }%>
 
 <div id="content">
@@ -12,8 +12,8 @@
 			
 			<div class="span8">
 				
-				<%= link_to new_employee_url, :class => "new_entry btn btn-primary" do %>
-					<i class="icon-plus"></i>Employee Baru
+				<%= link_to new_service_url, :class => "new_entry btn btn-primary" do %>
+					<i class="icon-plus"></i>Service Baru
 				<% end %> 
 				<hr />
 			
@@ -21,15 +21,15 @@
 				<table class="table table-bordered table-striped table-highlight" id='tableview'>
 					<thead>
 						<tr>
-							<th>Name</th>
-							<th>Kontak</th> 
-							<th>Alamat</th>
-							<th colspan='2'>Action</th>
+							<th>Service Name</th>
+							<th>Category</th>  
+							<th>Recommended Selling Price</th>
+							<th style='text-align:center;' colspan='2'>Action</th>
 						</tr>
 					</thead>
 					<tbody> 
 						<% @objects.each do |object| %>
-							<%= render :partial =>  'employees/entry', :locals => {
+							<%= render :partial =>  'services/entry', :locals => {
 								:object => object 
 							} %> 
 						<% end %>
@@ -69,7 +69,7 @@
 
 <div class="modal fade hide" id="editEntry">
   <div class="modal-header">
-    <h3>Edit Employee</h3>
+    <h3>Edit Service</h3>
   </div>
   <div class="modal-body"> 
 	<!-- content -->
@@ -82,7 +82,7 @@
 
 <div class="modal fade hide" id="newEntry">
   <div class="modal-header">
-    <h3>New Employee</h3>
+    <h3>New Service</h3>
   </div>
   <div class="modal-body"> 
 	<!-- content -->
@@ -104,4 +104,5 @@
 <% content_for :additional_js do %> 
 	<%= javascript_include_tag "common_order/entry_creation"  	%>
 <% end %>
+
 

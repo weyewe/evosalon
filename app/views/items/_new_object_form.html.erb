@@ -1,0 +1,46 @@
+<% if new_object.persisted? %>
+	<% id = 'edit_object'%>
+	<% rest_method_class = 'rest_put' %>
+<% else %>
+	<% id = 'new_object'%>
+	<% rest_method_class = 'rest_post' %>
+<% end %>
+
+<%= simple_form_for( new_object, :url => url,
+      :method => :post , 
+      :html => {:class => "form-horizontal prevent_double_submit ajax-form #{rest_method_class}  no_content_form",
+        :id => "#{id}"}) do |f| %>
+
+	 
+
+
+  <%= f.input :name  , :input_html => {:class => "input-xlarge "}, 
+  :label => "Name" %>
+ 
+<hr /> 
+	<%= f.input :item_category_id, :hint => "Kategori Barang", :label => "Item Category" do %>
+     <%= f.select :item_category_id, 
+         ItemCategory.all_selectable_objects %>
+   <% end %>
+
+	<%= f.input :recommended_selling_price  , 
+							:input_html => {:class => "input-xlarge ", 
+															:value => new_object.recommended_selling_price.to_i}, 
+  						:label => "Rekomendasi harga jual" , 
+							:as => :string,
+							:hint => "Dalam rupiah. Langsung isi tanpa koma. <br />"+ 
+										"Contoh untuk isi sembilan puluh lima ribu: "  + 
+										"<b>95000</b>" %>
+ 
+
+
+  <div class="form-actions">
+	
+		<% if new_object.persisted? %>
+			<%= f.button :submit , :class => "btn btn-primary", :value=> "Update Item" %>
+		<% else %>
+			<%= f.button :submit , :class => "btn btn-primary", :value=> "Create Item" %>
+		<% end %>
+		
+  </div>
+<% end %>

@@ -31,7 +31,7 @@ class ItemCategory < ActiveRecord::Base
   
   def parent_can_not_be_self
     current_object = self
-    if current_object.id == current_object.parent_id 
+    if current_object.persisted? and current_object.id == current_object.parent_id 
       errors.add(:parent_id , "Tidak boleh sama dengan object sekarang" )  
     end
   end

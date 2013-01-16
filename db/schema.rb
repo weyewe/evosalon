@@ -84,11 +84,10 @@ ActiveRecord::Schema.define(:version => 20130116133933) do
 
   create_table "services", :force => true do |t|
     t.string   "name"
+    t.integer  "creator_id"
     t.integer  "service_category_id"
     t.boolean  "is_deleted",                                               :default => false
     t.decimal  "recommended_selling_price", :precision => 11, :scale => 2, :default => 0.0
-    t.integer  "number_of_employee"
-    t.decimal  "commission_per_employee",   :precision => 11, :scale => 2, :default => 0.0
     t.datetime "created_at",                                                                  :null => false
     t.datetime "updated_at",                                                                  :null => false
   end

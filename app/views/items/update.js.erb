@@ -18,7 +18,7 @@ $(document).ready(function(){
 			// clean the add product form
 			$form.remove(); 
 
-			<% new_entry  = escape_javascript( render :partial =>  'employees/entry', :locals => {
+			<% new_entry  = escape_javascript( render :partial =>  'items/entry', :locals => {
 				:object => @object 
 			} )%>
 
@@ -32,14 +32,14 @@ $(document).ready(function(){
 
 
 		<% elsif  not @has_no_errors %> 
-			<% new_form = escape_javascript(   render :partial => "employees/new_object_form", :locals => {
+			<% new_form = escape_javascript(   render :partial => "items/new_object_form", :locals => {
 		    :new_object => @object , 
-				:url => employee_url(@object)  
+				:url => item_url(@object)  
 		  })%>
 			//replace the form, show the edit
 			$form.replaceWith("<%= new_form %>"); 
 
-			$.msgbox("Error dalam update employee: <%= @object.name %>", 
+			$.msgbox("Error dalam update item: <%= @object.name %>", 
 						{type: "error"});
 		<% end %>
 
