@@ -11,6 +11,17 @@ Evosalon::Application.routes.draw do
   resources :customers 
   resources :services
   resources :employees
+  
+  
+  resources :item_categories do
+    resources :items
+  end
+  resources :items 
+  
+  resources :service_categories do 
+    resources :services 
+  end
+  resources :services 
  
 =begin
   USER SETTING

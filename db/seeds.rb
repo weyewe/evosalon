@@ -15,3 +15,6 @@ first_role = Role.first
 
 company = Company.create(:name => "Super metal", :address => "Tanggerang", :phone => "209834290840932")
 admin = User.create_main_user(   :email => "admin@gmail.com" ,:password => "willy1234", :password_confirmation => "willy1234") 
+
+base_item_category =  ItemCategory.create :name => "Base Item" 
+base_item_category =  ServiceCategory.create :name => "Base Service" 

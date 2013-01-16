@@ -107,29 +107,7 @@ module NavigationHelper
   }
   
   
-  INVENTORY_NAV = {
-    :header => "Inventory",
-    :header_icon => "icon-copy",
-    :has_dropdown => true, 
-    :only_icon => false , 
-    :blocks => [
-      # block 1 
-      [
-        {
-          :name => "Material",
-          :url  => 'new_material_url',
-          :icon => "icon-folder-open",
-          :activities => [
-            {
-              :controller => "materials",
-              :action     => "new"
-            } 
-          ]
-        } 
-      ]
-      
-    ] 
-  }
+ 
   
   PAYMENT_NAV = {
     :header => "Payment",
@@ -170,8 +148,8 @@ module NavigationHelper
     ] 
   }
   
-  FACTORY_NAV = {
-    :header => "Factory",
+  INVENTORY_NAV = {
+    :header => "Inventory",
     :header_icon => "icon-shopping-cart",
     :has_dropdown => true, 
     :only_icon => false , 
@@ -179,70 +157,51 @@ module NavigationHelper
       # block 1 
       [
         {
-          :name => "Pre Production",
-          :url  => 'new_pre_production_history_url',
+          :name => "Item Category",
+          :url  => 'new_item_category_url',
           :icon => "icon-folder-close",
           :activities => [
             {
-              :controller => "pre_production_histories",
+              :controller => "item_categories",
               :action     => "new"
             } 
           ]
         },
         {
-          :name => "Production",
-          :url  => 'new_production_history_url',
+          :name => "Item DB",
+          :url  => 'new_item_url',
           :icon => "icon-shopping-cart",
           :activities => [
             {
-              :controller => "production_histories",
-              :action     => "new"
-            } 
-          ]
-        },
-        {
-          :name => "Post Production",
-          :url  => 'new_post_production_history_url',
-          :icon => "icon-wrench",
-          :activities => [
-            {
-              :controller => "post_production_histories",
+              :controller => "items",
               :action     => "new"
             } 
           ]
         } 
       ],
       
-      # block sales return 
+      # block Service Category
       [
         {
-          :name => "Surat Jalan",
-          :url  => 'new_delivery_url',
+          :name => "Service Category",
+          :url  => 'new_service_category_url',
           :icon => "icon-wrench",
           :activities => [
             {
-              :controller => "deliveries",
+              :controller => "service_categories",
               :action     => "new"
-            },
-            {
-              :controller => "delivery_entries",
-              :action     => "new"
-            }
+            } 
           ]
         },
         {
-          :name => "Sales Retur",
-          :url  => 'new_sales_return_url',
+          :name => "Service DB",
+          :url  => 'new_service_url',
           :icon => "icon-wrench",
           :activities => [
             {
-              :controller => "sales_returns",
+              :controller => "services",
               :action     => "new"
-            },
-            {
-              :controller => "sales_return_entries",
-              :action     => "new"
-            }
+            } 
           ]
         }
       ]
@@ -298,8 +257,8 @@ module NavigationHelper
     
     navigation_blocks = [] 
     [ 
-      MANAGEMENT_NAV# ,
-      #       INVENTORY_NAV,
+      MANAGEMENT_NAV,  
+            INVENTORY_NAV #,
       #       REPORT_NAV, 
       #       PAYMENT_NAV,
       #       FACTORY_NAV,
