@@ -18,10 +18,16 @@ Evosalon::Application.routes.draw do
   end
   resources :items 
   
+  resources :items do
+    resources :stock_migrations 
+  end
+  
   resources :service_categories do 
     resources :services 
   end
   resources :services 
+  
+  resources :stock_migrations
  
 =begin
   USER SETTING

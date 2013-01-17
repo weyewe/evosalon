@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130116133933) do
+ActiveRecord::Schema.define(:version => 20130117041943) do
 
   create_table "companies", :force => true do |t|
     t.string   "name"
@@ -41,22 +41,26 @@ ActiveRecord::Schema.define(:version => 20130116133933) do
   create_table "item_categories", :force => true do |t|
     t.string   "name"
     t.integer  "parent_id"
+    t.integer  "creator_id"
+    t.boolean  "is_base_category", :default => false
     t.integer  "lft"
     t.integer  "rgt"
     t.integer  "depth"
-    t.boolean  "is_deleted", :default => false
-    t.datetime "created_at",                    :null => false
-    t.datetime "updated_at",                    :null => false
+    t.boolean  "is_deleted",       :default => false
+    t.datetime "created_at",                          :null => false
+    t.datetime "updated_at",                          :null => false
   end
 
   create_table "items", :force => true do |t|
     t.integer  "creator_id"
-    t.integer  "ready",                                                    :default => 0
-    t.integer  "scrap",                                                    :default => 0
     t.string   "name"
     t.integer  "item_category_id"
     t.decimal  "average_cost",              :precision => 11, :scale => 2, :default => 0.0
     t.decimal  "recommended_selling_price", :precision => 11, :scale => 2, :default => 0.0
+    t.integer  "ready",                                                    :default => 0
+    t.integer  "scrap",                                                    :default => 0
+    t.integer  "pending_delivery",                                         :default => 0
+    t.integer  "on_delivery",                                              :default => 0
     t.boolean  "is_deleted",                                               :default => false
     t.datetime "created_at",                                                                  :null => false
     t.datetime "updated_at",                                                                  :null => false
@@ -74,12 +78,23 @@ ActiveRecord::Schema.define(:version => 20130116133933) do
   create_table "service_categories", :force => true do |t|
     t.string   "name"
     t.integer  "parent_id"
+    t.integer  "creator_id"
+    t.integer  "is_base_category", :default => 0
     t.integer  "lft"
     t.integer  "rgt"
     t.integer  "depth"
-    t.boolean  "is_deleted", :default => false
-    t.datetime "created_at",                    :null => false
-    t.datetime "updated_at",                    :null => false
+    t.boolean  "is_deleted",       :default => false
+    t.datetime "created_at",                          :null => false
+    t.datetime "updated_at",                          :null => false
+  end
+
+  create_table "service_roles", :force => true do |t|
+    t.integer  "creator_id"
+    t.string   "name"
+    t.decimal  "percentage_commission", :precision => 5, :scale => 2, :default => 0.0
+    t.integer  "service_id"
+    t.datetime "created_at",                                                           :null => false
+    t.datetime "updated_at",                                                           :null => false
   end
 
   create_table "services", :force => true do |t|
@@ -90,6 +105,52 @@ ActiveRecord::Schema.define(:version => 20130116133933) do
     t.decimal  "recommended_selling_price", :precision => 11, :scale => 2, :default => 0.0
     t.datetime "created_at",                                                                  :null => false
     t.datetime "updated_at",                                                                  :null => false
+  end
+
+  create_table "stock_entries", :force => true do |t|
+    t.integer  "is_addition",                                         :default => 1
+    t.integer  "creator_id"
+    t.integer  "source_document_id"
+    t.string   "source_document"
+    t.integer  "entry_case"
+    t.integer  "quantity"
+    t.integer  "used_quantity",                                       :default => 0
+    t.integer  "scrapped_quantity",                                   :default => 0
+    t.integer  "item_id"
+    t.boolean  "is_finished",                                         :default => false
+    t.decimal  "base_price_per_piece", :precision => 12, :scale => 2, :default => 0.0
+    t.datetime "created_at",                                                             :null => false
+    t.datetime "updated_at",                                                             :null => false
+  end
+
+  create_table "stock_migrations", :force => true do |t|
+    t.integer  "item_id"
+    t.string   "code"
+    t.integer  "creator_id"
+    t.integer  "quantity"
+    t.decimal  "average_cost", :precision => 11, :scale => 2, :default => 0.0
+    t.boolean  "is_confirmed",                                :default => false
+    t.integer  "confirmer_id"
+    t.datetime "confirmed_at"
+    t.datetime "created_at",                                                     :null => false
+    t.datetime "updated_at",                                                     :null => false
+  end
+
+  create_table "stock_mutations", :force => true do |t|
+    t.integer  "quantity"
+    t.integer  "scrap_item_id"
+    t.integer  "stock_entry_id"
+    t.integer  "creator_id"
+    t.integer  "source_document_id"
+    t.string   "source_document_entry"
+    t.integer  "source_document_entry_id"
+    t.string   "source_document"
+    t.integer  "mutation_case"
+    t.integer  "mutation_status",          :default => 1
+    t.integer  "item_status",              :default => 1
+    t.integer  "item_id"
+    t.datetime "created_at",                              :null => false
+    t.datetime "updated_at",                              :null => false
   end
 
   create_table "users", :force => true do |t|

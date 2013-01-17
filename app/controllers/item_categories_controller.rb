@@ -11,11 +11,11 @@ class ItemCategoriesController < ApplicationController
   end
   
   def create
-    base_item_category = ItemCategory.find_by_id params[:item_category][:parent_id]
+    # base_item_category = ItemCategory.find_by_id params[:item_category][:parent_id]
     
     # sleep 5
     
-    @object = base_item_category.create_sub_object( params[:item_category] ) 
+    @object = ItemCategory.create_by_employee(current_user,  params[:item_category] ) 
     if @object.valid?
       @new_object=  ItemCategory.new
     else
@@ -30,7 +30,7 @@ class ItemCategoriesController < ApplicationController
   
   def update 
     @object = ItemCategory.find_by_id params[:id] 
-    @object.update_attributes( params[:item_category])
+    @object.update_by_employee( current_user, params[:item_category])
     @has_no_errors  = @object.errors.messages.length == 0
   end
   

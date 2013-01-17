@@ -3,6 +3,9 @@ class CreateItemCategories < ActiveRecord::Migration
     create_table :item_categories do |t|
       t.string :name
       t.integer :parent_id
+      t.integer :creator_id 
+      t.boolean :is_base_category, :default => false 
+      
       t.integer :lft
       t.integer :rgt
       t.integer :depth # this is optional.

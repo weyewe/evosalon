@@ -4,6 +4,10 @@ class CreateServiceCategories < ActiveRecord::Migration
       
       t.string :name
       t.integer :parent_id
+      t.integer :creator_id 
+      
+      t.integer :is_base_category, :default => false 
+      
       t.integer :lft
       t.integer :rgt
       t.integer :depth # this is optional.

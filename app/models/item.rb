@@ -3,20 +3,8 @@ class Item < ActiveRecord::Base
   has_many :stock_entry 
   
   belongs_to :item_category 
-  
-  has_many :service_items, :through => :replacement_items 
-  has_many :replacement_items
-  has_many :stock_mutations
-  has_many :scrap_items
-  has_many :exchange_scrap_items 
-  has_many :conversion_entries
-  has_many :stock_adjustments
-  has_many :purchase_returns
-  
-  has_many :service_components, :through => :compatibilities
-  has_many :compatibilities
-  
-  # validates_uniqueness_of :name
+  has_one :stock_migration
+   
   validates_presence_of :name , :item_category_id 
   
   validate :unique_non_deleted_name 
@@ -65,27 +53,27 @@ class Item < ActiveRecord::Base
     StockMigration.where(:item_id => self.id ).count > 0 
   end
   
-  def self.create_by_employee(  employee, item_params) 
+  def self.create_by_employee(  employee, object_params) 
     return nil if employee.nil? 
     
     new_object = Item.new  
     
     new_object.creator_id                = employee.id 
-    new_object.name                      = item_params[:name] 
-    new_object.item_category_id          = item_params[:item_category_id]   
-    new_object.recommended_selling_price = item_params[:recommended_selling_price]
+    new_object.name                      = object_params[:name] 
+    new_object.item_category_id          = object_params[:item_category_id]   
+    new_object.recommended_selling_price = object_params[:recommended_selling_price]
 
     new_object.save 
     return new_object 
   end
   
-  def  update_by_employee(  employee,   item_params)  
+  def  update_by_employee(  employee,   object_params)  
     return nil if employee.nil? 
     
     self.creator_id                = employee.id 
-    self.name                      = item_params[:name] 
-    self.item_category_id          = item_params[:item_category_id]   
-    self.recommended_selling_price = item_params[:recommended_selling_price] 
+    self.name                      = object_params[:name] 
+    self.item_category_id          = object_params[:item_category_id]   
+    self.recommended_selling_price = object_params[:recommended_selling_price] 
     
     self.save 
     return self 

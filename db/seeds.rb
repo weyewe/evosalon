@@ -31,3 +31,29 @@ service = Service.create_by_employee(  admin, {
   :service_category_id => base_service_category.id  ,
   :recommended_selling_price => BigDecimal('180000')
 })
+
+ 
+
+puts "Creating Stock Migration"
+=begin
+  UI Spec
+  1. search the item
+  2. create migration (if not available yet)
+  3. confirm 
+=end
+StockMigration.create_by_employee(admin, item, {
+  :quantity => 10 ,
+  :average_cost => BigDecimal("10000")
+})
+
+
+puts "Creating StockConverter" # we used to call this stock conversion
+puts "Creating InstantPurchase (PurchaseInvoice)"
+
+
+puts "Creating StockConversion" # the instance of stock converter => changing the item 
+puts "Creating Instant Sales (POS) (SalesInvoice)" # deduct item 
+
+=begin
+  Item-linked Service
+=end

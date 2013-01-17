@@ -1,0 +1,2 @@
+class StockMigrationsController < ApplicationController
+end

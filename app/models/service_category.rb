@@ -48,18 +48,49 @@ class ServiceCategory < ActiveRecord::Base
     return self.class.find(:all, :conditions => ['lower(name) = :name and is_deleted = :is_deleted   ', 
                 {:name => current_object.name.downcase, :is_deleted => false  }]) 
   end
+  
+  def self.create_by_employee(employee,  object_params ) 
+    return nil if employee.nil? 
+     
+    new_object = self.new  
+    new_object.creator_id = employee.id 
+    new_object.name = object_params[:name]
+    new_object.parent_id =  object_params[:parent_id]
+    new_object.save 
+     
+    return new_object
+  end
+  
+  def update_by_employee( employee, object_params )
+    return nil if employee.nil? 
+    
+    self.creator_id = employee.id
+    
+    self.name = object_params[:name]
+    self.parent_id = object_params[:parent_id]
+    
+    self.save
+    return self 
+  end
    
   
   def self.active_objects
     self.where(:is_deleted => false).order("created_at DESC")
   end
   
-  def create_sub_object( service_category_params )  
-    new_category = self.class.create(:name => service_category_params[:name],
-                              :parent_id => self.id ) 
-    return new_category
-  end
   
+  def self.create_base_object( employee, object_params ) 
+    return nil if employee.nil? 
+    
+    new_object = self.new 
+    new_object.creator_id = employee.id 
+    new_object.is_base_category = true 
+    new_object.name = object_params[:name]
+    
+    new_object.save
+    return new_object 
+  end
+   
   
   def active_services
     self.services.where(:is_deleted => false).order("created_at DESC")
@@ -82,14 +113,21 @@ class ServiceCategory < ActiveRecord::Base
       return nil
     end
    
-    
-    self.is_deleted = true
-    self.save
-    
-    self.services.each do |service|
-      service.service_category_id = parent.id
-      service.save 
+    ActiveRecord::Base.transaction do
+      self.is_deleted = true
+      self.save
+
+      self.class.where(:parent_id => self.id ).each do |sub_category|
+        sub_category.parent_id = self.parent_id 
+        sub_category.save 
+      end
     end
+    
+    
+    # self.services.each do |service|
+    #   service.service_category_id = parent.id
+    #   service.save 
+    # end
     # what will happen to the item from this category? Go to the parent category 
   end
 end
