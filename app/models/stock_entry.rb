@@ -15,9 +15,7 @@ class StockEntry < ActiveRecord::Base
   
 =begin
   Adding stock entry during stock migration 
-=end
-  
-
+=end 
   def self.generate_stock_migration_stock_entry( stock_migration  ) 
     new_object                      = StockEntry.new 
     new_object.creator_id           = stock_migration.creator_id
@@ -33,6 +31,42 @@ class StockEntry < ActiveRecord::Base
     
     item.add_stock_and_recalculate_average_cost_post_stock_entry_addition( new_object ) 
     
+    StockMutation.create_mutation_by_stock_migration(  {
+      :creator_id               =>  stock_migration.creator_id   ,
+      :quantity                 => stock_migration.quantity      ,
+      :stock_entry_id           => new_object.id                 ,
+      :source_document_entry_id => stock_migration.id            ,
+      :source_document_id       => stock_migration.id            ,
+      :source_document_entry    => stock_migration.class.to_s    ,
+      :source_document          => stock_migration.class.to_s    ,
+      :item_id                  => item.id
+    }) 
+  end
+  
+=begin
+  Adding stock entry because of stock conversion
+=end 
+  def self.generate_stock_conversion_stock_entry( stock_conversion , stock_converter_entry_target ) 
+    item = stock_converter_entry_target.item 
+    base_price_per_piece = ?? #? find the stock mutations used to deduct the source (stock entries)
+    # and sum it up 50,000*5 + 40,000*4  << if it came from 2 stock entries 
+    
+    base_price_per_piece = base_price_per_piece/stock_converter_entry_target.quantity.to_f
+    
+    new_object                      = StockEntry.new 
+    new_object.creator_id           = stock_conversion.creator_id
+    new_object.quantity             = stock_converter_entry_target.quantity 
+    new_object.base_price_per_piece = stock_conversion.average_cost 
+    new_object.item_id              = stock_conversion.item_id 
+    new_object.entry_case           = STOCK_ENTRY_CASE[:initial_migration]
+    new_object.source_document      = stock_conversion.class.to_s
+    new_object.source_document_id   = stock_conversion.id 
+    new_object.save  
+
+    item = stock_conversion.item  
+
+    item.add_stock_and_recalculate_average_cost_post_stock_entry_addition( new_object ) 
+
     StockMutation.create_mutation_by_stock_migration(  {
       :creator_id               =>  stock_migration.creator_id   ,
       :quantity                 => stock_migration.quantity      ,

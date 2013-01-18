@@ -7,6 +7,8 @@ class CreateStockConverterEntries < ActiveRecord::Migration
       t.integer :quantity 
       t.integer :entry_status , :default => STOCK_CONVERTER_ENTRY_STATUS[:source] 
       
+      t.decimal :cost, :precision => 11, :scale => 2 , :default => 0  # 10^9 << max value
+      
       t.timestamps
     end
   end
